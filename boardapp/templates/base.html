@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<HTML LANG="KO">
+
+<HEAD>
+    <title>{% block title%} AWS / Django Web Application{% endblock %}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    {% load static %}
+    <LINK REL='STYLESHEET' HREF="{% static 'boardapp/assets/css/main.css' %}" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    {% block script %}{% endblock %}
+</HEAD>
+<body>
+    <div id="header">
+        <div class="logo">
+            <div class="row">
+                <div class="col-8 logo-link dark-link">
+                    <A href="{% url 'main' %}">AWS / Django Web Application</A>
+                </div>
+               <div class="col-4 center member-link dark-link">
+                    {% if user.username %}
+                        <A href="{% url 'password_change' %}">{{ user.last_name }} 님</A> / 
+                        <a href="{% url 'logout' %}">로그아웃</a>
+                    {% else %}
+                        <a href="{% url 'login' %}">로그인</a> / 
+                        <a href="{% url 'register' %}">회원가입</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="menu">
+            <div class="row">
+                <div class="col-2 center sideline dark-link">
+                    <a href="{%url 'main'%}">HOME</a>              
+                </div>
+                {% comment %} <div class="col-2 center sideline dark-link"> 
+                    <a href="{% url 'introduce' %}">소개</a>
+                </div>
+                <div class="col-2 center sideline dark-link">
+                    <a href="{% url 'boardlist' 'notice' %}">공지사항</a>
+                </div>
+                <div class="col-2 center sideline dark-link">
+                    <a href="{% url 'boardlist' 'free' %}">자유 게시판</a>
+                <div class="col-2 center sideline dark-link">
+                    <a href="{% url 'boardlist' 'comm' %}">대화형 게시판</a>
+                </div>
+                <div class="col-2 center sideline">&nbsp;</div>       {% endcomment %}
+        </div>
+    </div>
+    </div> 
+    <div id="container">
+        {% block content %}{% endblock %}
+    </div>
+    <div id="footer">
+        <div id="row">
+            <div class="col-12 center">
+                            &copy; Copyright 2020, All Rights
+                            Reserved / <a href="mailto:kallusis369@gmail.com">Contact Us</a>
+
+</body>
+</HTML>

@@ -1,0 +1,78 @@
+{% extends "base.html"%}
+
+
+{% block title %} 회원가입 {%endblock%}
+
+{% block script %}
+{% load staticfiles %}
+<script src = "{% static 'boardapp/assets/js/user.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class = "row block-center">
+<div class="card-box col-6">
+<form id="register_form" action="/boardapp/user_register_res/" method="post">
+{% csrf_token %}
+<input type="hidden" name="phone" id="phone" value="" />
+<input type="hidden" name="email" id="email" value="" />
+    <div class="row">
+        <div class="col-12"><h2>회원가입</h2></div>
+    </div>
+    <!-- ID 입력 -->
+    <div class="row">
+        <div class="ml-1 col-11">
+            ID:
+        <span class="margin-left-10">
+            <input type="text" name="username" id="username" value="" size="8" />
+            <input type="button" value="중복확인" onClick="idCheck()" />
+            <span id="idcheck-result"></span>
+        </span>
+        </div>
+    </div>
+    <!-- 비밀번호 입력 -->
+    <div class="row">
+        <div class="ml-1 col-11">Password:
+            <span class="margin-left-10">
+                <input type="password" name="password" id="password" value="" size="8" />
+            </span>
+            <br/>
+            <span style="font-size: 0.7em">
+                ※비밀번호는 최소 8글자 이상 입력해야 합니다
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ml-1 col-11">Password 확인:
+            <span class="margin-left-10">
+                <input type="password" id="password_check" value="" size="8" />
+            </span>
+        </div>
+    </div>
+    <!-- E-mail 입력 -->
+    <div class="row">
+        <div class="ml-1 col-11">
+            E-mail:
+        <span class="margin-left-10">
+        <input type="text" id="email_id" value="" size="8" />
+        @ <input type="text" id="email_domain" value="" size="8" />
+        <select id="email_selection" onChange="changeEmailDomain()">
+            <option value="" selected="selected">--선택하세요--</option>
+            <option value="naver.com">naver.com</option>
+            <option value="gmail.com">gmail.com</option>
+            <option value="hanmail.net">hanmail.net</option>
+            <option value="yahoo.com">yahoo.com</option>
+        </select>
+        </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 center">
+            <input type="button" value="회원가입" onClick="userRegister()"/>
+            <input type="button" value="취소" onClick="cancleUserRegister()"/>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+{% endblock %}
+    
