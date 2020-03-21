@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
+from .models import *
+import datetime
 
 # Create your views here.
 
@@ -13,9 +15,9 @@ def user_register_idcheck(request): #ID중복체크 함수
     if request.method == "POST":
         username = request.POST['username']
     else:
-        username = ""
+        username = ''
 
-    idObject = User.Objects.filter(username__exact=username)
+    idObject = User.objects.filter(username__exact=username)
     idCount = idObject.count()
 
     if idCount > 0 :
@@ -37,9 +39,10 @@ def user_register_result(request):
 
     try:
         if username and User.objects.filter(username__exact=username).count() == 0:
-            date_of_birth = datetime(birth_year, birth_month, birth_day)
+            date_of_birth = datetime.datetime(birth_year, birth_month, birth_day)
+            
             user = User.objects.create_user(
-                username,password,last_name,email,phone,birth_day,birth_month,birth_day
+                username,password,last_name,email,phone,date_of_birth
             )
 
             redirection_page = '/boardapp/user_register_completed/'

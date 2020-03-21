@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() { //enter를 누를시 submit이 되게 하는 함수
     $('input').keydown(function(e) {
         if (e.which == 13)
         {

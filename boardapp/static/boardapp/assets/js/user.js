@@ -8,7 +8,7 @@ function idCheck() {
         type: "POST",
         url: "/boardapp/user_register_idcheck/",
         data: {
-            'username' : $('username').val(),
+            'username' : $('#username').val(),
             'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val() //csrf위조방지 토큰을 전송해 위조방지 처리
         },
             success: function(response) {
@@ -44,6 +44,16 @@ function userRegister() {
     if (!$('#password').val())
     {
         alert("비밀번호를 입력해 주시기 바랍니다.");
+        return;
+    }
+    if ($('#password').val() != $('#password_check').val())
+    {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+    }
+    if ($('#password').val().length < 8)
+    {
+        alert("비밀번호는 8자리 이상이어야 합니다.");
         return;
     }
     if (!$('#last_name').val())
