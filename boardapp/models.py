@@ -75,6 +75,10 @@ class BoardCategories(models.Model) :
     creation_date = models.DateTimeField(default=timezone.now)
     last_update_date = models.DateTimeField(default=timezone.now)
 
+    def __str__(self):
+        return '%s (%s)' % (self.category_name, self.category_code)
+    
+
     class Meta:
         managed = False # managed를 false로 함으로써 테이블 손실을 방지
         db_table = 'board_categories'
@@ -89,6 +93,9 @@ class Boards(models.Model) :
     view_count = models.IntegerField(blank=True,default=0)
     image = models.ImageField(upload_to="images/%Y/%m/%d", blank=True)
 
+    def __str__(self):
+        return '[%d] %.40s' % (self.id, self.title)
+
     class Meta :
         managed = False
         db_table = 'boards'
@@ -101,7 +108,10 @@ class BoardReplies(models.Model):
     content = models.TextField()
     registered_date = models.DateTimeField(default=timezone.now)
     last_update_date = models.DateTimeField(default=timezone.now)
-    reference_reply_id = models.IntegerField(blank=True,null=True)
+    references_reply_id = models.IntegerField(blank=True,null=True)
+
+    def __str__(self):
+        return '[%d] %.40s - [%d] %.40s' % (self.article.id, self.article.title, self.id, self.content)
 
     class Meta :
         managed = False
@@ -111,6 +121,9 @@ class BoardLikes(models.Model) :
     article = models.ForeignKey(Boards, models.DO_NOTHING)
     user = models.ForeignKey(User, models.DO_NOTHING)
     registered_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return '[%d] %.40s - %s' % (self.article.id, self.article.title, self.user.last_name)
 
     class Meta :
         managed = False

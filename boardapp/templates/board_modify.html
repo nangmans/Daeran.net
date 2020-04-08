@@ -1,0 +1,72 @@
+{% extends "base.html"%}
+
+{% block title %}{{ object.category.category_name }} - 게시물 수정 {% endblock %}
+
+{% block script %}
+{% load static %}<script src = "{% static '/boardapp/assets/js/boards.js' %}"></script>
+<script>
+var b1 = document.getElementById("modifySend");
+var b2 = document.getElementById("modifyCancle");
+
+b1.addEventListener("click", function(){modifySend()}, false);
+b2.addEventListener("click", function(){location.href='{% url 'boardview' object.id %}'}, false);
+</script>
+{% if user.username == "" or object.user.id != user.id %}
+<script>
+    alert("잘못된 접근입니다.");
+    location.href="{% url 'main' %}";
+
+</script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row block-center board">
+    <div class="col-10">
+        <form id="modify_form" action="{% url 'boardmodifyres' %}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ object.id }}" />
+        <input type="hidden" name="referer" value="board" />
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-12"><h2>{{ object.category.category_name }} -게시물 수정</h2></div>
+        </div>
+        <hr class="my-3">
+        <div class="row border-top-line">
+            <div class="col-1"><p>작성자</p></div>
+            <div class="col-11"><p>{{ user.last_name }}</p></div>
+        </div>
+        <div class="row border-top-line">
+            <div class="col-1 right"><p>작성일<p></div>
+            <div class="col-11"><p>{{ object.registered_date|date:"Y-m-d"}}</p></div>
+        </div>
+        <hr class="my-1">
+        <div class="row">
+            <div class="col-1 right"><p>제목</p></div>
+            <div class="col-11"><input type="text" name="title" id="title" class="form-control" value={{object.title}} /></div>
+        </div>
+        <div class="row height-400">
+            <div class="col-1 right"><p class="middle">내용</p></div>
+            <div class="col-11"><textarea name="content" id="content" class="form-control" rows="8">{{ object.content }}</textarea></div>
+        </div>
+        <div class="row">
+            <div class="col-1 right"><p class="middle">이미지</p></div>
+            <div class="col-11">
+                <div class="row">  
+                    <div class="col-12">현재 등록된 파일: {{ object.image.name }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-12"><input type="file" name="modify_image" accept="image/gif, image/jpeg, image/png" /></div>
+                </div>
+                <small id="fileHelp" class="form-text text-muted">jpg, jpeg, png 형식의 이미지 파일만 지원합니다</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button type="button"  value="목록" id="modifySend" class="btn btn-primary">수정</button> 
+                <button type="button"  value="수정" id="modifyCancle" class="btn btn-secondary">취소</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+{% endblock%}

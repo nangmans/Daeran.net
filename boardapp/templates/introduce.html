@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Main{% endblock %}
+
+{% block script %}
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-3">Welcome to Daeran.net!</h1>
+  <p class="lead"><h2>Daeran.net은 대란 정보를 한번에 모아볼 수 있는 웹 사이트입니다.</h2></p>
+  <hr class="my-4">
+  <p><strong>회원가입을 통해 Daeran.net에서 <span class="text-success">자유롭게 글과 댓글을 작성하세요.</span></strong></p>
+  <p class="lead">
+    <a class="btn btn-primary btn-sm" href='/boardapp/user_register/' role="button">회원가입하러 가기</a>
+  </p>
+  <p><strong>자유게시판에서 <span class="text-success">자유롭게 글을 써보세요.</span></strong></p>
+  <p class="lead">
+    <a class="btn btn-primary btn-sm" href='/boardapp/board_list/freeboard/' role="button">자유게시판 가기</a>
+  </p>
+  <p><strong>공지사항은<span class="text-success">공지사항 게시판에서 확인할 수 있습니다.</span></strong></p>
+  <p class="lead">
+    <a class="btn btn-primary btn-sm" href='/boardapp/board_list/notice/' role="button">공지사항 가기</a>
+  </p>
+  <p><strong>대란 정보는 상단의 대란 게시판을 이용해 주세요.</strong></p>
+  
+</div>
+{% endblock %}

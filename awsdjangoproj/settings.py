@@ -15,6 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -23,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'n2uf8(*d15b(pn-k2sfo*!%=wv_n2%%l46y4kfnpwy0&kw@)66'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'boardapp.apps.BoardappConfig',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -119,20 +122,42 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
 
+if DEBUG:
+    STATIC_URL = '/static/'
+    #STATIC_ROOT = 'static'
+    STATICFILES_DIRS = [
+        STATIC_DIR,
+    ]
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
+else:
+    AWS_ACCESS_KEY_ID = 'AKIAIOBK3LY2GU3QEVHQ'
+    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_STORAGE_BUCKET_NAME = 'awsdjangobucket'
+    AWS_DEFAULT_ACL = None
+    AWS_S3_REGION_NAME = 'ap-northeast-2'
+    AWS_S3_HOST = 's3.ap-northeast-2.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl' : 'max-age=86400',
+    }
 
-AUTH_USER_MODEL = 'boardapp.user'
+    DEFAULT_FILE_STORAGE = 'awsdjangoproj.storage_backends.MediaStorage'
+    STATICFILES_STORAGE = 'awsdjangoproj.storage_backends.StaticStorage'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+    STATIC_URL = 'https://%s/%s/static/' % (AWS_S3_HOST, AWS_STORAGE_BUCKET_NAME)
+    MEDIA_URL = 'https://%s/%s/media/' % (AWS_S3_HOST, AWS_STORAGE_BUCKET_NAME)
 
 LOGOUT_REDIRECT_URL = '/boardapp/'
 LOGIN_REDIRECT_URL = '/boardapp/'
+
+CSRF_COOKIE_SECURE = False
+
+AUTH_USER_MODEL = 'boardapp.user'
