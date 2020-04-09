@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block script %}
+{% load static %}<script src = "{% static 'boardapp/assets/js/boards.js' %}"></script>
+<script>
+var b1 = document.getElementById("replySend");
+var b2 = document.getElementById("modifyArticle");
+var b3 = document.getElementById("deleteArticle");
+var b4 = document.getElementById("boardList");
+
+
+window.addEventListener("load", function(event) {
+     replyShow("{{object.id}}");
+  });
+
+b1.addEventListener("click", function(){replyWriteSend({{ object.id }})}, false);
+b2.addEventListener("click", function(){location.href='{% url 'boardmodify' object.id %}'}, false);
+b3.addEventListener("click", function(){deleteClick()}, false);
+b4.addEventListener("click", function(){location.href='{% url 'boardlist' object.category.category_code %}'}, false);
+
+</script>
+{% endblock %}
+
+{% block content %}
+{% comment %} 게시판 내용 {% endcomment %}
+<div class="row block-center board">
+    <div class="col-10">
+            <div class="col-12"><h2>{{ object.category.category_name }}</h2></div>
+        <hr class="my-3">
+        <div class="row">
+            <hr class="my-5">
+            <div class="col-6"><h1>{{ object.title }}</div>
+            <div class="col-1">{{ object.user.last_name }}</div>
+            <div class="col-2">조회 수 : {{ object.view_count }}</div>
+            <div class="col-3">{{ object.registered_date|date:"Y-m-d H:i:s"}}</div>
+        </div>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-12 view-content">
+                 <p class="content-box">{{ object.content|linebreaks }}</p> {% comment %} 개행을 적용하기 위해서 linebreaks를 쓴다 {% endcomment %}
+                {% if object.image %}<img src="{{ object.image.url }}" />
+                {% endif %}
+            </div>
+        </div>
+        <hr class="my-5">
+        {% comment %} 댓글 내용 {% endcomment %}
+        </div class="row">
+            <div class="col-12 article-reply" name="reply_div" data-id="{{object.id}}"></div>   {% comment %} 댓글 목록이 보이는 영역  {% endcomment %}
+        </div>
+        {% if user.username %}
+            <hr class="my-3">
+            <div class="write-box">
+                <form action="" method="POST" name="reply_form" data-type="reply" data-id="{{object.id}}">
+                    <input type="hidden" name="id" value="{{object.id}}" />
+                    <input type="hidden" name="level" value="0" />
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <textarea class="form-control col-6" name="content" textarea-id="{{object.id}}" rows="3"></textarea>
+                    {% comment %} <div class="row height-80 center"> 
+                        <div class="col-11">
+                            <textarea name="content" class="form-width-90" textarea-id="{{object.id}}"></textarea>
+                        </div>{% endcomment %}
+                        <div class="col-1">
+                        <button type="button" value="등록" id="replySend" class="btn btn-primary">등록</button>
+                        {% comment %} <input type="button" onClick="replyWriteSend({{ object.id }})" value="등록" class="form-width-90" />                           {% endcomment %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% endif%}
+        {% comment %} 목록,수정,삭제 {% endcomment %}
+        <div class="row">
+            <div class="col-12">
+                {% if object.user == user %}
+                    <form action="{% url 'boarddeleteres' %}" method="POST" id="delete_form">
+                    <input type="hidden" name="article_id" value="{{object.id}}" />
+                    <input type="hidden" name="referer" value="board" />
+                    {% csrf_token %}
+                    <button type="button"  value="목록" id="boardList" class="btn btn-secondary">목록</button>
+                    <button type="button" value="수정" id="modifyArticle" class="btn btn-info">수정</button>
+                    <button type="button"  value="삭제" id="deleteArticle" class="btn btn-danger">삭제</button>
+                    </form>
+                {% else %}
+                   <button type="button"  value="목록" id="boardList" class="btn btn-secondary">목록</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="height-100"></div>
+{% endblock %}
+
+

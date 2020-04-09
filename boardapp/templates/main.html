@@ -6,5 +6,57 @@
 {%endblock%}
 
 {%block content%}
+<div class="alert alert-dismissible alert-warning">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h4 class="alert-heading">Welcome!</h4>
+  <p class="mb-0">Daeran.net에서 대란 정보들을 한번에 볼 수 있습니다.  둘러보세요!</a></p>
+</div>
+{% comment %}  대문 이미지 {% endcomment %}
+{% comment %} <div class="row block-center"> 
+    <div class="col-12 center">
+    {% load static %}<img src="{% static 'boardapp/assets/images/main.png' %}" width=600 />
+    </div>
+</div>{% endcomment %}
+
+{% comment %} 게시판 글 목록 {% endcomment %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col-2">카테고리</th>
+      <th scope="col-5">제목</th>
+      <th scope="col-2">글쓴이</th>
+      <th scope="col-2">등록일</th>
+      <th scope="col-1">조회 수</th>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr>
+    {% for article in articles %}
+      {% if article.category.category_name == 'Ppompu' %}
+        <td scope="col-2"><span class="badge badge-success">{{ article.category.category_name }}</span></td>
+      {% elif article.category.category_name == 'Ruriweb' %}
+        <td scope="col-2"><span class="badge badge-info">{{ article.category.category_name }}</span></td>
+      {% elif article.category.category_name == "Clien" %}
+        <td scope="col-2"><span class="badge badge-warning">{{ article.category.category_name }}</span></td>
+      {% else %}
+        <td scope="col-2"><span class="badge badge-primary">{{ article.category.category_name }}</span></td>
+      {% endif %}
+      <th scope="col-4"><a href="{% url 'boardview' article.id %}">
+            {{ article.title }}
+            {% if article.reply_count > 0 %}
+            [{{ article.reply_count }}]
+            {% endif %}</th>
+      <td scope="col-2">{{ article.user.last_name }}</td>
+      <td scope="col-3">{{ article.registered_date |date:"Y-m-d H:i:s" }}</td>
+      <td scope="col-1">{{ article.view_count }}</td>
+    </tr>
+    {% empty %}
+    <div class="row margin-10 center">
+    현재 등록된 게시물이 없습니다.
+    </div>
+    {% endfor %}
+  </tbody>
+</table>
+
 
 {% endblock%}

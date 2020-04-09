@@ -1,0 +1,34 @@
+<form action=""  method="POST" name="modify_form" data-type="modify" data-id="{{ object.id }}" enctype="multipart/form-data">
+    <input type = "hidden" name="id" value="{{object.id}}" />
+    <input type = "hidden" name="referer" value="comm" />
+    {% csrf_token %}  
+    <div class="row border-top-line">
+        <div class="col-12">
+            <input type="text" name="modify_title" data-id="{{object.id}}" class="form-width-90" value="{{object.title}}" />
+        </div>
+    </div>
+    <div class="row border-bottom-line">
+        <div class="col-12"><h4>글쓴이:<span style="padding-right: 30px">{{ object.user.last_name }}</span>
+            <span>{{ object.registered_date|date:"Y-m-d" }}</span></h4>
+        </div>
+    </div>
+    <div class="row height-200">
+        <div class="col-12 view-content-comm">
+            <textarea name="modify_content" class="form-width-80">
+            {{ object.content }}
+            </textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 view content-comm">
+            현재 등록된 파일: {{ object.image.name }}<br/><br/>
+            <input type="file" name="img_file" accept="image/gif, image/jpeg, image/png" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 center">
+            <input type="button" onClick="modifyCommSend({{object.id}})" value="수정" />
+            <input type="button" onClick="modifyCancle({{object.id}})" value="취소" />
+        </div>
+    </div>   
+</form>

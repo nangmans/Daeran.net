@@ -3,8 +3,15 @@
 {% block title %}Login{% endblock %}
 
 {% block script %}
-    {% load staticfiles %}
+    {% load static %}
         <script src = "{% static 'boardapp/assets/js/login.js'%}"></script>
+<script>
+var b1 = document.getElementById("login");
+var b2 = document.getElementById("register");
+
+b1.addEventListener("click", function(){login()}, false);
+b2.addEventListener("click", function(){location.href='{% url 'register' %}'}, false);
+</script>
 {% endblock %}
 
 {% block content %}
@@ -17,29 +24,32 @@
     <div class="card-box col-5">
     <form id="login_form" action="." method="POST">{% csrf_token %}
         <div class="row">
-            <div class="col-12 center"><h2>Login</h2></div>
+            <div class="col-12 center"><h1>Login</h1></div>
         </div>
+        <hr class="my-4">
         <div class="row">
-            <div class="col-3 right">ID</div>
+            <div class="col-3">ID</div>
             <div class="ml-1 col-8">
-                <input type="text" name="username" id="username" size="12" />
+                <input type="text" name="username" id="username" size="12" class="form-control" />
             </div>
         </div>
         <div class="row">
-            <div class="col-3 right">Password</div>
+            <div class="col-3">Password</div>
             <div class="ml-1 col-8">
-                <input type="password" name="password" id="password" size="12" />
+                <input type="password" name="password" id="password" size="12" class="form-control" />
             </div>
         </div>
+        <hr class="my-4">
         <div class="row">
             <div class="col-12 center">
-                <input type ="button" value="로그인" onClick="login()" />
-                <input type ="button" value="회원가입" onClick="location.href='{% url 'register' %}'" />
+                <button type="button"  value="로그인" id="login" class="btn btn-primary">로그인</button> 
+                <button type="button"  value="회원가입" id="register" class="btn btn-info">회원가입</button>
             </div>
         </div>
+        <hr class="my-3">
         <div class="row">
-            <div class="col-12 center">
-             <h4>아이디가 없으십니까? 회원가입을 진행해 주시기 바랍니다.</h4>
+            <div class="col-12">
+             <h5>아이디가 없으십니까? 회원가입을 진행해 주시기 바랍니다.</h5>
             </div>
         </div>
     </form>

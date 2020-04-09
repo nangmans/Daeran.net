@@ -81,6 +81,17 @@ function userRegister() {
     $('#email').val($('#email_id').val()+"@"+$('#email_domain').val());
 
     $('#register_form').submit();
-    
+}
 
+function changePassword() {
+    if (!$('#id_old_password').val()) {
+        alert("비밀번호를 입력해 주시기 바랍니다.");
+        return;
+    }
+    if($('#id_new_password1').val() != $('#id_new_password2').val()) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+    }
+
+    $('#password_change_form').submit();
 }

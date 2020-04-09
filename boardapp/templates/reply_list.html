@@ -1,0 +1,67 @@
+
+<div class="row border-top-line">
+    <div class="col-12 margin-botton-10"><h3>댓글{{ replies.count }}개</h3></div>
+</div>
+{% for reply in replies %}
+<div class="row">
+    {% if reply.level == 0 %}
+    <div class="col-12 reply-block" data-id="{{ reply.id }}"></div>
+</div>
+    {% endif %}
+    {% if reply.level == 1 %}
+    <div class="col-1">ㄴ</div>
+    <div class="col-11"  data-id="{{ reply.id }}"></div>
+</div>
+    {% endif %}
+    
+        <div class="row border-top-dotted" name="reply_block" data-id="{{ reply.id }}">
+            <div class="col-6"><h4>
+                <span style="padding-right : 30px ">{{ reply.user.last_name }}</span>
+                <span>{{reply.registered_date|date:"Y-m-d H:i:s" }}</span>
+                </h4>
+            </div>
+            <div class="col-6 right">
+                <form action="" method="POST" name="reply_deletes"  data-type="reply_delete"  data-id="{{ reply.id }}" />
+                <input type="hidden" name="reply_id" value="{{ reply.id }}" />
+                {% csrf_token %}
+                <p>
+                {% if reply.level == 0 %}
+                {% comment %} <span style="cursor:pointer" onClick="replyClick({{ reply.id }})">댓글</span> {% endcomment %}
+                {% endif %}
+                {% if reply.user == request.user %}
+                <span style="cursor:pointer" onClick="replyModifyClick({{ reply.id }})">수정</span>
+                <span style="cursor:pointer" onClick="replyDeleteClick({{ reply.id }},{{reply.article.id}})">삭제</span>
+                {% endif %}
+                </p>
+                </form>
+            </div>
+        </div>
+        <div class="row border-bottom-dotted">
+            <div class="col-12 view-content-comm">
+            {{ reply.content|linebreaks }}{% comment %} 개행 적용을 위해 |linebreaks 를 붙인다  {% endcomment %}
+            </div>
+        </div>
+        {% if user.username and reply.level == 0 %}
+        <div class="reply-reply" name="reply-reply" data-id="{{ reply.id }}">
+            <div class="write-box">
+                <form action="" method="POST" name="reply_reply_form" data-type="reply-reply" data-id="{{reply.id}}"  >
+                <input type="hidden" name="level" value="1" />
+                <input type="hidden" name="id" value="{{ reply.references_reply_id }}" />
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-11">
+                        <textarea name="content" data-id="{{reply.id}}" class="form-width-90"></textarea>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" value="대댓글 등록" id="replyReply" class="btn btn-primary">대댓글 등록</button>
+                        <input type="button" onClick="replyReplySend({{ reply.references_reply_id }},{{ reply.article.id }})" value="대댓글 등록" class="form-width-90" />
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+{% endfor %}
+    
+                    
+ 

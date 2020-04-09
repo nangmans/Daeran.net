@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}{{ board.category.category_name }} - 게시물 작성 {% endblock %}
+
+{% block script %}
+{% load static %}<script src="{% static 'boardapp/assets/js/boards.js' %}"></script>
+<script>
+var b1 = document.getElementById("writeSend");
+var b2 = document.getElementById("writeCancle");
+
+b1.addEventListener("click", function(){writeSend()}, false);
+b2.addEventListener("click", function(){location.href='{% url 'boardlist' board_category.category_code %}'}, false);
+</script>
+{% if user.username == "" %}
+<script> alert("잘못된 접근입니다.");
+         location.href="{% url 'main' %}";
+</script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row block-center board">
+    <div class="col-10">
+        <form id="write_form" action="{% url 'boardwriteres' %}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="category_id" value="{{ board_category.id }}" />
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-12"><h2>{{board_category.category_name}} - 게시물 작성</h2></div>
+        </div>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-1 right"><p>작성자</p></div>
+            <div class="col-11"><p>{{ user.last_name }}</p></div>
+        </div>
+        <hr class="my-1">
+        <div class="row">
+            <div class="col-1 right"><p>제목</p></div>
+            <div class="col-11"><input type="text" name="title" id="title" class="form-control" placeholder="작성할 제목을 입력해 주세요" /></div>
+        </div>
+        <div class="row">
+            <div class="col-1 right"><p class="middle">내용</p></div>
+            <div class="col-11"><textarea name="content" id="content" class="form-control" rows="8" placeholder="작성할 내용을 입력해 주세요"></textarea></div>
+        </div>
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-1 right"><p class="middle">이미지</p></div>
+            <div class="col-11"><input type="file" name="img_file" accept="image/gif, image/jpeg, image/png" /></div>
+        </div>
+        <hr class="my-5">
+        <div class="row">
+            <div class="col-12 center">
+                <button type="button"  value="목록" id="writeSend" class="btn btn-primary">작성</button> 
+                <button type="button"  value="수정" id="writeCancle" class="btn btn-secondary">취소</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

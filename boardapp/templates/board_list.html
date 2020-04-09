@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}{{ board_category.categoey_name }} 리스트 {% endblock %}
+
+{%block script%}
+<script>
+var b1 = document.getElementById("write");
+
+b1.addEventListener("click", function(){location.href="{% url 'boardwrite' board_category.category_code %}"}, false);
+</script>
+
+{%endblock%}
+
+{%block content %}
+{% comment %} 카테고리 이름 및 설명 {% endcomment %}
+<div class="row block-center board">
+    <div class="col-11">
+    {% comment %} 카테고리가 존재할 시 나타나는 게시판 {% endcomment %}
+        {% if board_category.category_name %}
+         <div class="row">
+            <div class="col-6"><h2>{{ board_category.category_name }}</h2></div>-
+            <div class="col-6"><h4>{{ board_category.category_desc }}</h4></div>
+         </div>
+         {% comment %} 게시판 목록 표시 {% endcomment %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col-3">카테고리</th>
+                <th scope="col-1">No.</th>                
+                <th scope="col-4">제목</th>
+                <th scope="col-1">글쓴이</th>
+                <th scope="col-2">등록일</th>
+                <th scope="col-1">조회 수</th>
+                </tr>
+            </thead> 
+            <tbody>
+                <tr>
+                {% for article in articles %}
+                {% if article.category.category_name == 'Ppompu' %}
+                    <td scope="col-3"><span class="badge badge-success">{{ article.category.category_name }}</span></td>
+                {% elif article.category.category_name == 'Ruriweb' %}
+                    <td scope="col-3"><span class="badge badge-info">{{ article.category.category_name }}</span></td>
+                {% elif article.category.category_name == "Clien" %}
+                    <td scope="col-3"><span class="badge badge-warning">{{ article.category.category_name }}</span></td>
+                {% else %}
+                    <td scope="col-3"><span class="badge badge-primary">{{ article.category.category_name }}</span></td>
+                {% endif %}
+                <td scope="col-1">{{article.id}}</td>
+                <th scope="col-4"><a href="{% url 'boardview' article.id %}">
+                        {{ article.title }}
+                        {% if article.reply_count > 0 %}
+                        [{{ article.reply_count }}]
+                        {% endif %}</th>
+                <td scope="col-1">{{ article.user.last_name }}</td>
+                <td scope="col-2">{{ article.registered_date |date:"Y-m-d H:i:s" }}</td>
+                <td scope="col-1">{{ article.view_count }}</td>
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+        {% comment %} paginator 표시 {% endcomment %}
+        <div>
+            <ul class="pagination">
+                {% if articles.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{articles.previous_page_number}}">&laquo;</a>
+                </li>
+                    {% comment %} <a class="page-link" herf="?page=1">&laquo; 처음</a> 
+                    <a href="?page={{ articles.previous_page_number }}">이전</a>{% endcomment %}
+                {% endif %}
+                {% for page in page_list %}
+                    {% if page == articles.number %}
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ page }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{page}}">{{ page }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if articles.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{articles.next_page_number}}">&raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>  
+        {% comment %} 검색 기능 표시 {% endcomment %}
+        <div class="row">
+            <div class="col-md-4">
+                <form class="form-inline my-2 my-lg-0" action="." method="POST" id="search_form" >{% csrf_token %}
+                    <input class="form-control mr-sm-2" type="text" placeholder="검색할 게시물의 제목을 입력하세요" 
+                            name="search_text" id="search_text" value="{{ search_text }}" size="35" >
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">검색</button>
+                </form>
+            </div>
+        {% comment %} 게시판 글쓰기 기능 표시 {% endcomment %}
+            <div class="col-md-3 offset-md-4">
+        {% if user.username and user.is_superuser >= board_category.authority %}
+        <button type="button" id="write" class="btn btn-primary" href="{% url 'boardwrite' board_category.category_code %}">글쓰기</button>
+        </div>
+        </div>
+        {% endif %}
+    {% else %}
+    {% comment %} 카테고리가 없을 시 나타나는 게시판 {% endcomment %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                <th scope="col-3">카테고리</th>
+                <th scope="col-1">No.</th>               
+                <th scope="col-4">제목</th>
+                <th scope="col-1">글쓴이</th>
+                <th scope="col-2">등록일</th>
+                <th scope="col-1">조회 수</th>
+                </tr>
+            </thead> 
+            <tbody>
+                <tr>
+                {% for article in articles %}
+                {% if article.category.category_name == 'Ppompu' %}
+                 <td scope="col-3"><span class="badge badge-success">{{ article.category.category_name }}</span></td>
+                {% elif article.category.category_name == 'Ruriweb' %}
+                 <td scope="col-3"><span class="badge badge-info">{{ article.category.category_name }}</span></td>
+                {% elif article.category.category_name == "Clien" %}
+                 <td scope="col-3"><span class="badge badge-warning">{{ article.category.category_name }}</span></td>
+                {% else %}
+                 <td scope="col-3"><span class="badge badge-primary">{{ article.category.category_name }}</span></td>
+                {% endif %}
+                <td scope="col-1">{{article.id}}</td>
+                <th scope="col-4"><a href="{% url 'boardview' article.id %}">
+                        {{ article.title }}
+                        {% if article.reply_count > 0 %}
+                        [{{ article.reply_count }}]
+                        {% endif %}</th>
+                <td scope="col-1">{{ article.user.last_name }}</td>
+                <td scope="col-2">{{ article.registered_date |date:"Y-m-d H:i:s" }}</td>
+                <td scope="col-1">{{ article.view_count }}</td>
+                </tr>
+                {% empty %}
+                <div class="row margin-10 center">
+                현재 등록된 게시물이 없습니다.
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+</div>
+<div class="height-100"></div>
+
+{% endblock %}
