@@ -22,7 +22,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n2uf8(*d15b(pn-k2sfo*!%=wv_n2%%l46y4kfnpwy0&kw@)66'
+SECRET_KEY = '**'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'awsdjangodb',
         'USER' : 'admin',
-        'PASSWORD' : 's01117770s!',
+        'PASSWORD' : '**',
         'PORT' : '3306',
         'HOST' : 'database-1.c0w0x5akcl9v.ap-northeast-2.rds.amazonaws.com',
         'OPTIONS' : {
@@ -139,8 +139,8 @@ if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 else:
-    AWS_ACCESS_KEY_ID = 'AKIAIOBK3LY2GU3QEVHQ'
-    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_ACCESS_KEY_ID = '***'
+    AWS_SECRET_ACCESS_KEY = '****'
     AWS_STORAGE_BUCKET_NAME = 'awsdjangobucket'
     AWS_DEFAULT_ACL = None
     AWS_S3_REGION_NAME = 'ap-northeast-2'
