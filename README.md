@@ -1,6 +1,6 @@
 # [Daeran.net](Daeran.net)
 
-\>대란 정보들을 한 곳에서 볼 수 있는 [Daeran.net입니다.](Daeran.net%EC%9E%85%EB%8B%88%EB%8B%A4.)
+\>대란 정보들을 한 곳에서 볼 수 있는 [Daeran.net입니다.](http://awsdjangoboard.eba-bspdpztp.ap-northeast-2.elasticbeanstalk.com/boardapp/)
 
 개발 Framework : django 2.1  
 프로그래밍 언어 : Python 3.6  
