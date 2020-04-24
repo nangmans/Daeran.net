@@ -1,4 +1,4 @@
-# [Daeran.net](Daeran.net)
+# [Daeran.net]
 
 \>대란 정보들을 한 곳에서 볼 수 있는 [Daeran.net입니다.](http://awsdjangoboard.eba-bspdpztp.ap-northeast-2.elasticbeanstalk.com/boardapp/)
 
